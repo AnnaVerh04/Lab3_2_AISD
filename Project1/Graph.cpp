@@ -93,4 +93,38 @@ public:
 		edgeset.insert(ed);
 		checkedge.insert({ ed.from, ed.to });
 	}
+	bool remove_edge(const Vertex& from, const Vertex& to)
+	{
+		if (!has_vertex(from) || !has_vertex(to))
+			return false;
+		for (int i = 0; i < graph[from].size(); i++)
+		{
+			if (graph[from][i].second == to)
+			{
+				Edge ed(from, to, graph[from][i].first);
+				graph[from].erase(graph[from].begin() + i);
+				edgeset.erase(ed);
+				checkedge.erase(checkedge.find({ ed.from, ed.to }));
+				return true;
+			}
+		}
+		return false;
+	}
+	bool remove_edge(const Edge& ed)
+	{
+		if (!has_vertex(ed.from) || !has_vertex(ed.to))
+			return false;
+		for (int i = 0; i < graph[ed.from].size(); i++)
+		{
+			if (graph[ed.from][i].second == ed.to && graph[ed.from][i].first == ed.dist)
+			{
+
+				graph[ed.from].erase(graph[ed.from].begin() + i);
+				edgeset.erase(ed);
+				//checkedge.erase(checkedge.find({ ed.from, ed.to }));
+				return true;
+			}
+		}
+		return false;
+	}
 };
